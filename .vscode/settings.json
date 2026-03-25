@@ -1,0 +1,32 @@
+{ 
+   "latex-workshop.latex.tools": [ 
+     { 
+       "name": "latexmk-custom", 
+       "command": "latexmk", 
+       "args": [ 
+         "-xelatex", 
+         "-outdir=%WORKSPACE_FOLDER%/build", 
+         "-e", "$xelatex=q{xelatex %O -synctex=1 -interaction=nonstopmode %S}",
+         "%DOC%" 
+       ] 
+     },
+     {
+       "name": "move-pdf",
+       "command": "mv",
+       "args": [
+         "%WORKSPACE_FOLDER%/build/%DOCFILE%.pdf",
+         "%WORKSPACE_FOLDER%/output/"
+       ]
+     }
+   ], 
+   "latex-workshop.latex.recipes": [ 
+     { 
+       "name": "latexmk build", 
+       "tools": [
+         "latexmk-custom",
+         "move-pdf"
+       ] 
+     } 
+   ], 
+   "latex-workshop.latex.autoBuild.run": "onSave" 
+ }

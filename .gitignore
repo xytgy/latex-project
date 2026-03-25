@@ -1,3 +1,4 @@
+# LaTeX auxiliary files
 *.aux
 *.log
 *.out
@@ -5,4 +6,10 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+# Build directory
+build/
+output/
+
+# PDF output
 *.pdf
