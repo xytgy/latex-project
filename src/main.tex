@@ -1,7 +1,99 @@
-\documentclass[UTF8]{ctexart}
+\documentclass[UTF8, zihao=-4]{ctexart}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{setspace}
+
+\title{2022年高教社杯全国大学生数学建模竞赛C题优秀论文总结报告}
+\author{姓名：\underline{杨子龙}}
+\date{\today}
 
 \begin{document}
+\maketitle
+\onehalfspacing
 
-Hello LaTeX!1111111中见啊见啊
-人生111222333333
+\section{论文基本内容及结构}
+2022年全国大学生数学建模竞赛C题的主题为“古代玻璃制品的成分分析与鉴别”。该问题背景深厚，结合了考古学与现代化学成分分析技术，旨在通过数学建模手段探究古代玻璃制品的风化规律、分类特征及其成分关联。
+
+优秀论文通常遵循严谨的学术论文结构，主要包括：
+\begin{enumerate}
+    \item \textbf{摘要}：简要阐述研究背景、核心模型、求解算法及主要结论。
+    \item \textbf{问题重述与分析}：对竞赛题目进行深入解读，明确各小问的研究重点。
+    \item \textbf{模型假设与符号说明}：建立数学模型的前提条件和关键变量定义。
+    \item \textbf{数据预处理}：处理缺失值、无效数据（如成分累加和不满足85\%-105\%范围的情况）及异常值。其成分性特征要求各组分之和满足：
+    \begin{equation}
+        \sum_{i=1}^{n} w_i \approx 100\%
+    \end{equation}
+    其中 $w_i$ 为第 $i$ 种化学成分的质量百分比。
+    \item \textbf{模型建立与求解}：针对四个具体问题分别建立并求解模型。
+    \item \textbf{模型评价与推广}：讨论模型的优缺点及在其他领域的应用潜力。
+\end{enumerate}
+
+\section{解决问题所用的原理、方法及建立的模型}
+优秀论文在解决四个核心问题时，采用了多元化的数学模型和统计方法：
+
+\subsection{问题1：风化关系分析与成分预测}
+\begin{itemize}
+    \item \textbf{原理}：通过相关性分析探究表面风化与玻璃类型、纹饰、颜色的关系。
+    \item \textbf{模型}：采用\textbf{Logistic回归模型}分析定性变量的影响，利用\textbf{卡方检验}验证显著性。其逻辑概率公式为：
+    \begin{equation}
+        P(Y=1|X) = \frac{\exp(\beta_0 + \sum \beta_i X_i)}{1 + \exp(\beta_0 + \sum \beta_i X_i)}
+    \end{equation}
+    其中 $Y=1$ 表示发生风化。
+    \item \textbf{预测}：针对成分预测，建立\textbf{多元线性回归模型}还原风化前的含量。
+\end{itemize}
+
+\subsection{问题2：分类规律分析与亚类划分}
+\begin{itemize}
+    \item \textbf{原理}：基于化学成分特征的聚类与判别。
+    \item \textbf{模型}：利用\textbf{主成分分析 (PCA)} 进行降维。采用\textbf{K-means++聚类算法}对高钾和铅钡玻璃进行亚类划分，其优化的欧氏距离公式为：
+    \begin{equation}
+        D(x, \mu_j) = \sqrt{\sum_{k=1}^{n} (x^{(k)} - \mu_j^{(k)})^2}
+    \end{equation}
+    其中 $\mu_j$ 为第 $j$ 个类簇的中心。
+    \item \textbf{验证}：利用\textbf{轮廓系数 (Silhouette Coefficient)} 确定最佳分类数。
+\end{itemize}
+
+\subsection{问题3：未知样本的鉴别}
+\begin{itemize}
+    \item \textbf{模型}：建立\textbf{随机森林 (Random Forest)}、\textbf{支持向量机 (SVM)} 或\textbf{Fisher线性判别模型}。
+    \item \textbf{过程}：将问题1和问题2中提取的特征作为输入变量，利用已知类别的样本作为训练集。在模型训练过程中，引入\textbf{交叉验证}以提高泛化能力，最终对附件表单3中的未知类别玻璃文物进行精准分类。
+\end{itemize}
+
+\subsection{问题4：关联关系差异性分析}
+\begin{itemize}
+    \item \textbf{原理}：探究不同类别玻璃成分间的耦合关系及其随环境变化的差异。
+    \item \textbf{模型}：利用\textbf{Pearson相关系数矩阵}计算各成分间的相关性强度：
+    \begin{equation}
+        \rho_{X,Y} = \frac{\text{cov}(X,Y)}{\sigma_X \sigma_Y} = \frac{\sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum (X_i - \bar{X})^2} \sqrt{\sum (Y_i - \bar{Y})^2}}
+    \end{equation}
+    \item \textbf{展示}：绘制\textbf{热力图 (Heatmap)} 直观展示不同类别间的关联差异。
+\end{itemize}
+
+\section{求解计算使用的工具及算法}
+\begin{itemize}
+    \item \textbf{计算工具}：主要使用 \textbf{Python} (pandas, scikit-learn, matplotlib)、\textbf{MATLAB} 或 \textbf{SPSS}。
+    \item \textbf{核心算法}：
+    \begin{itemize}
+        \item \textbf{数据处理}：归一化处理（针对成分性数据）。
+        \item \textbf{优化算法}：K-means++ 的中心点初始化优化。
+        \item \textbf{统计分析}：非参数检验（如 Mann-Whitney U 检验）处理不服从正态分布的数据。
+    \end{itemize}
+\end{itemize}
+
+\section{结果及结论}
+通过建立并求解上述模型，论文得出的主要结论如下：
+\begin{enumerate}
+    \item \textbf{风化规律与统计规律}：高钾玻璃在风化过程中主要成分含量波动较小，而铅钡玻璃的 SiO$_2$ 比例显著降低。预测结果显示，风化前的样品在主要助熔剂成分上与未风化样品具有较高的一致性。
+    \item \textbf{分类标准的确立}：利用判别分析确认了二氧化硅 (SiO$_2$)、氧化铅 (PbO) 和氧化钡 (BaO) 是区分两类玻璃的最具辨识度指标。
+    \item \textbf{亚类划分结果}：将高钾玻璃细分为两类，铅钡玻璃细分为三类，每类在主要显色成分（如氧化铜 CuO）和助熔剂比例上均呈现出独特的分布特征。
+    \item \textbf{鉴别模型的高效性}：建立的模型在对附件表单3中的未知样品进行鉴别时，分类结果具有极强的鲁棒性，能够有效抵抗数据中噪声的影响。
+    \item \textbf{成分关联性差异}：发现不同类别的玻璃成分间关联性差异显著，如高钾玻璃中氧化钾 (K$_2$O) 与二氧化硅呈现明显的正相关，而铅钡玻璃则不然。
+\end{enumerate}
+
+\section{读后感想}
+阅读 2022 年 C 题的优秀论文后，我深受启发。首先，数据预处理在数学建模中至关重要，尤其是针对具有“成分性”特征的数据，必须进行严格的清洗与校验。其次，跨学科知识的融合极大地拓宽了建模思路，将统计学方法应用于考古数据的分析，既严谨又具说服力。最后，优秀论文的排版规范、图表精美、逻辑清晰，这些都是在未来学术写作中值得学习的榜样。通过这次研读，我不仅掌握了聚类、回归等算法的实际应用，更深刻理解了数学建模在解决实际复杂问题中的巨大价值。
+
 \end{document}
